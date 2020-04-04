@@ -33,6 +33,7 @@
 /bundles/org.openhab.binding.daikin/ @caffineehacker
 /bundles/org.openhab.binding.darksky/ @cweitkamp
 /bundles/org.openhab.binding.deconz/ @davidgraeff
+/bundles/org.openhab.binding.deebot930/ @sirea-07
 /bundles/org.openhab.binding.denonmarantz/ @jwveldhuis
 /bundles/org.openhab.binding.digiplex/ @rmichalak
 /bundles/org.openhab.binding.digitalstrom/ @MichaelOchel @msiegele
