@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="deebot930"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+                          xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+    	<thing-type id="deebot" listed="false">
+			<supported-bridge-type-refs>
+				<bridge-type-ref id="server" />
+			</supported-bridge-type-refs>
+    		<label>Deebot930 Binding Thing</label>
+    		<description>Deebot930 Roboter</description>
+
+    		<channels>
+    			<channel id="clean" typeId="clean" />
+    		</channels>
+
+    		<config-description>
+    			<parameter name="jid" type="text" required="true">
+    				<label>Deebot JID</label>
+    				<description>XMPP JID of Deebot</description>
+    			</parameter>
+                <parameter name="name" type="text">
+                    <label>Deebot Name</label>
+                    <description>Friendly Name of Deebot</description>
+                    <default>MyDeebot</default>
+                </parameter>
+    		</config-description>
+
+    	</thing-type>
+
+    	<!-- Sample Channel Type -->
+    	<channel-type id="clean">
+    		<item-type>Switch</item-type>
+    		<label>Clean Active</label>
+    		<description>Let's Deebot clean</description>
+    	</channel-type>
+
+</thing:thing-descriptions>

@@ -21,8 +21,8 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Deebot930Configuration {
 
-    public @Nullable String serverAddress;
-    public Integer serverPort = 5223;
+    public String serverAddress;
+    public Integer serverPort;
     public String username = "";
     public String password = "";
     public String domain = "";

@@ -27,7 +27,7 @@ public class Deebot930BindingConstants {
     private static final String BINDING_ID = "deebot930";
 
     // List of all Thing Type UIDs
-    public static final ThingTypeUID BRIDGE_TYPE_XMPP_SERVER = new ThingTypeUID(BINDING_ID, "xmppServer");
+    public static final ThingTypeUID BRIDGE_TYPE_XMPP_SERVER = new ThingTypeUID(BINDING_ID, "server");
     public static final ThingTypeUID THING_TYPE_DEEBOT = new ThingTypeUID(BINDING_ID, "deebot");
 
     // List of all Channel ids

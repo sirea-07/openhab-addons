@@ -18,31 +18,24 @@
       <groupId>org.igniterealtime.smack</groupId>
       <artifactId>smack-tcp</artifactId>
       <version>4.3.4</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.igniterealtime.smack</groupId>
       <artifactId>smack-im</artifactId>
       <version>4.3.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.igniterealtime.smack</groupId>
-      <artifactId>smack-im</artifactId>
-      <version>4.3.4</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>de.caterdev.vacuumclean</groupId>
       <artifactId>core</artifactId>
       <version>0.1</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>de.caterdev.vacuumclean</groupId>
       <artifactId>deebot-core</artifactId>
       <version>0.1</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
+  <properties>
+    <bnd.importpackage>!android,!sun.security.pkcs11</bnd.importpackage>
+  </properties>
 </project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="deebot930"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Bridge Thing Type -->
+	<bridge-type id="server">
+		<label>Deebot XMPP Server</label>
+		<description>This is the XMPP Server</description>
+
+		<config-description>
+			<parameter name="serverAddress" type="text" required="true">
+				<description>Network address of the XMPP Server</description>
+				<label>Network Address</label>
+				<context>network-address</context>
+				<default>192.168.190.62</default>
+			</parameter>
+			<parameter name="serverPort" type="integer" required="true">
+				<description>Port number of the XMPP Server</description>
+				<label>Port</label>
+				<default>5223</default>
+			</parameter>
+			<parameter name="username" type="text" required="true">
+				<description>Login Username</description>
+				<label>Username</label>
+				<default>username23</default>
+			</parameter>
+			<parameter name="password" type="text" required="true">
+				<context>password</context>
+				<description>Login Password</description>
+				<label>Password</label>
+				<default>password</default>
+			</parameter>
+			<parameter name="domain" type="text" required="true">
+				<description>Login Domain</description>
+				<label>Domain</label>
+				<default>ecouser.net</default>
+			</parameter>
+			<parameter name="resource" type="text" required="true">
+				<description>Resource</description>
+				<label>Resource TODO</label>
+				<default>resource</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+</thing:thing-descriptions>
