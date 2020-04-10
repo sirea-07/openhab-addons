@@ -13,6 +13,7 @@
 package org.openhab.binding.deebot930.internal;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.smarthome.core.thing.DefaultSystemChannelTypeProvider;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
@@ -32,4 +33,6 @@ public class Deebot930BindingConstants {
 
     // List of all Channel ids
     public static final String CHANNEL_CLEAN = "clean";
+    public static final String CHANNEL_BATTERY_LEVEL = DefaultSystemChannelTypeProvider.SYSTEM_CHANNEL_BATTERY_LEVEL
+            .getUID().getId();
 }

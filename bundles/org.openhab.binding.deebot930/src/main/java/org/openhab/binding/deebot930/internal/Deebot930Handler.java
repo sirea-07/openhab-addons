@@ -12,16 +12,10 @@
  */
 package org.openhab.binding.deebot930.internal;
 
-import static org.openhab.binding.deebot930.internal.Deebot930BindingConstants.*;
-
-import de.caterdev.vaccumclean.deebot.smack.packets.action.ActionPacket;
-import de.caterdev.vaccumclean.deebot.smack.packets.action.CleanPacket;
-import de.caterdev.vaccumclean.deebot.smack.packets.response.ResponsePacket;
 import de.caterdev.vacuumclean.deebot.core.constants.CleanAction;
-import de.caterdev.vacuumclean.deebot.core.constants.CleanSpeed;
-import de.caterdev.vacuumclean.deebot.core.constants.CleanType;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
@@ -29,13 +23,14 @@ import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
-import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.util.ExceptionCallback;
-import org.jivesoftware.smack.util.SuccessCallback;
+import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.openhab.binding.deebot930.internal.Deebot930BindingConstants.CHANNEL_BATTERY_LEVEL;
+import static org.openhab.binding.deebot930.internal.Deebot930BindingConstants.CHANNEL_CLEAN;
 
 /**
  * The {@link Deebot930Handler} is responsible for handling commands, which are
@@ -48,6 +43,7 @@ public class Deebot930Handler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(Deebot930Handler.class);
     private @Nullable Deebot930ServerHandler bridge;
+    private @Nullable Deebot930Client client;
 
     public Deebot930Handler(Thing thing) {
         super(thing);
@@ -56,21 +52,43 @@ public class Deebot930Handler extends BaseThingHandler {
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         logger.warn("############ Deebot930Handler.handleCommand");
+
+        Jid userJid = getUserJid();
+        Jid deebotJid = getDeebotJid();
+
+        client = new Deebot930Client(bridge.getServerConnection());
+
         if (CHANNEL_CLEAN.equals(channelUID.getId())) {
             if (command instanceof OnOffType) {
-                try {
-                    String deebotJid = (String) thing.getConfiguration().get("jid");
-                    String username = (String) bridge.getThing().getConfiguration().get("username");
-                    String domain = (String) bridge.getThing().getConfiguration().get("domain");
-                    String resource = (String) bridge.getThing().getConfiguration().get("resource");
+                CleanAction action = OnOffType.ON.equals(command) ? CleanAction.Start : CleanAction.Stop;
 
-                    CleanAction action = OnOffType.ON.equals(command) ? CleanAction.Start : CleanAction.Stop;
-
-                    sendPacket(new CleanPacket(JidCreate.from(username, domain, resource), JidCreate.from(deebotJid), CleanType.Auto.getType(), CleanSpeed.Standard.getValue(), action.getValue(), null));
-                } catch (XmppStringprepException e) {
-                    logger.error("", e);
-                }
+                client.clean(userJid, deebotJid, action);
             }
+        } else if (CHANNEL_BATTERY_LEVEL.equals(channelUID.getId())) {
+            String batteryLevel = client.getBatteryLevel(userJid, deebotJid);
+            updateState(channelUID, new DecimalType(batteryLevel));
+        }
+        }
+
+    private Jid getUserJid() {
+        String username = (String) bridge.getThing().getConfiguration().get("username");
+        String domain = (String) bridge.getThing().getConfiguration().get("domain");
+        String resource = (String) bridge.getThing().getConfiguration().get("resource");
+
+        try {
+            return JidCreate.from(username, domain, resource);
+        } catch (XmppStringprepException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Jid getDeebotJid() {
+        String deebotJidStr = (String) thing.getConfiguration().get("jid");
+
+        try {
+            return JidCreate.from(deebotJidStr);
+        } catch (XmppStringprepException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -111,11 +129,5 @@ public class Deebot930Handler extends BaseThingHandler {
         // Add a description to give user information to understand why thing does not work as expected. E.g.
         // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
         // "Can not access device as username and/or password are invalid");
-    }
-
-    private void sendPacket(CleanPacket packet) {
-        bridge.getServerConnection().sendIqRequestAsync(packet)
-                .onSuccess(result -> logger.info("SUCCESS"))
-                .onError(exception -> logger.error("ERROR", exception));
     }
 }

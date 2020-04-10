@@ -2,14 +2,12 @@ package org.openhab.binding.deebot930.internal;
 
 import de.caterdev.vaccumclean.deebot.smack.packets.Query;
 import de.caterdev.vacuumclean.core.ssl.VacuumCleanSSLContext;
-import discovery.Deebot930DiscoveryService;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
-import org.eclipse.smarthome.core.thing.binding.ThingHandlerService;
 import org.eclipse.smarthome.core.types.Command;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.provider.ProviderManager;
@@ -20,8 +18,6 @@ import org.jxmpp.jid.parts.Resourcepart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @NonNullByDefault
@@ -57,6 +53,7 @@ public class Deebot930ServerHandler extends BaseBridgeHandler {
             configBuilder.setSendPresence(false);
             //TODO: not setting this might enable communication with ecovacs server?
             configBuilder.setCustomSSLContext(VacuumCleanSSLContext.get());
+
             Roster.setRosterLoadedAtLoginDefault(false);
 
             serverConnection = new XMPPTCPConnection(configBuilder.build());
@@ -69,6 +66,8 @@ public class Deebot930ServerHandler extends BaseBridgeHandler {
 
             logger.debug("Login to Deebot XMPP Server...");
             serverConnection.login(config.username, config.password, Resourcepart.from(config.resource));
+            new Thread(new PingRunner(serverConnection)).start();
+            serverConnection.registerIQRequestHandler(new Deebot930IqRequestHandler());
 
             updateStatus(ThingStatus.ONLINE);
         } catch (Exception e) {
@@ -81,11 +80,5 @@ public class Deebot930ServerHandler extends BaseBridgeHandler {
     public void handleCommand(ChannelUID channelUID, Command command) {
         logger.warn("############ Deebot930ServerHandler.handleCommand");
     }
-
-    @Override
-    public Collection<Class<? extends ThingHandlerService>> getServices() {
-        return Collections.singletonList(Deebot930DiscoveryService.class);
-    }
-
 
 }

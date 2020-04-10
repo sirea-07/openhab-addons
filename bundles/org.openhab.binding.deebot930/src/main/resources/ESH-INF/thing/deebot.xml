@@ -12,6 +12,7 @@
 
     		<channels>
     			<channel id="clean" typeId="clean" />
+				<channel id="battery-level" typeId="system.battery-level" />
     		</channels>
 
     		<config-description>
@@ -28,7 +29,6 @@
 
     	</thing-type>
 
-    	<!-- Sample Channel Type -->
     	<channel-type id="clean">
     		<item-type>Switch</item-type>
     		<label>Clean Active</label>

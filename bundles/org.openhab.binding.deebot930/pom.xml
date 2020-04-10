@@ -13,17 +13,38 @@
 
   <name>openHAB Add-ons :: Bundles :: Deebot930 Binding</name>
 
+  <properties>
+    <bnd.importpackage>!android,!sun.security.pkcs11</bnd.importpackage>
+    <smack.version>4.3.4</smack.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.igniterealtime.smack</groupId>
       <artifactId>smack-tcp</artifactId>
-      <version>4.3.4</version>
+      <version>${smack.version}</version>
     </dependency>
     <dependency>
       <groupId>org.igniterealtime.smack</groupId>
       <artifactId>smack-im</artifactId>
-      <version>4.3.4</version>
+      <version>${smack.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.igniterealtime.smack</groupId>
+      <artifactId>smack-extensions</artifactId>
+      <version>${smack.version}</version>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.igniterealtime.smack</groupId>-->
+<!--      <artifactId>smack-resolver-javax</artifactId>-->
+<!--      <version>${smack.version}</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.igniterealtime.smack</groupId>-->
+<!--      <artifactId>smack-java7</artifactId>-->
+<!--      <version>${smack.version}</version>-->
+<!--    </dependency>-->
+
     <dependency>
       <groupId>de.caterdev.vacuumclean</groupId>
       <artifactId>core</artifactId>
@@ -35,7 +56,4 @@
       <version>0.1</version>
     </dependency>
   </dependencies>
-  <properties>
-    <bnd.importpackage>!android,!sun.security.pkcs11</bnd.importpackage>
-  </properties>
 </project>
